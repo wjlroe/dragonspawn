@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dragon Spawn</title>
+    <!--[if IE]><script src="excanvas.compiled.js"></script><![endif]-->
+    <script type="text/javascript">
+(function() {
+    var lastTime = 0;
+    var vendors = ['webkit', 'moz'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+        window.cancelAnimationFrame =
+          window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+    }
+
+    if (!window.requestAnimationFrame)
+        window.requestAnimationFrame = function(callback, element) {
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+              timeToCall);
+            lastTime = currTime + timeToCall;
+            return id;
+        };
+
+    if (!window.cancelAnimationFrame)
+        window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+        };
+}());
+    </script>
+    <style>
+* { margin:0; padding:0; } /* to remove the top and left whitespace */
+html, body { width:100%; height:100%; } /* just to be sure these are full screen*/
+canvas { display:block; position: absolute; left: 50%; top: 50%; overflow: hidden; background-color: RGB(36,142,85); } /* To remove the scrollbars */
+    </style>
+  </head>
+  <body>
+    <div id="sprites" style="display:none;">
+      <img src="images/bones.png" alt="bones" id="bones">
+      <img src="images/flask.png" alt="flask" id="flask">
+      <img src="images/player.png" alt="player" id="player">
+    </div>
+    <canvas id="surface"></canvas>
+    <script type="text/javascript" src="game.js"></script>
+  </body>
+</html>

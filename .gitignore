@@ -1,0 +1,17 @@
+/pom.xml
+*jar
+/lib
+/classes
+/native
+/.lein-failures
+/checkouts
+/.lein-deps-sum
+/.lein-plugins
+/.lein-cljs*
+/.lein-env
+/target
+/resources/public/**/*.js
+/resources/public/**/*.cljs
+/_deploy
+.DS_Store
+.lein-repl-history
