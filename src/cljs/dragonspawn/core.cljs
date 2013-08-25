@@ -9,8 +9,12 @@
 
 (def game-width 800)
 (def game-height 600)
-(def cell-size 64)
+(def cell-size 32)
 (def aspectRatio (float (/ 4 3)))
+
+(defn abs
+  [number]
+  (Math/abs number))
 
 (defn cell->coords
   [x y]
@@ -20,6 +24,9 @@
 (defn pixels->cell
   [pixels]
   (int (/ pixels cell-size)))
+
+(def game-x-cells (pixels->cell game-width))
+(def game-y-cells (pixels->cell game-height))
 
 (defn surface-element
   []
@@ -35,7 +42,8 @@
 (def sprites
   {:bones (dom/getElement "bones")
    :flask (dom/getElement "flask")
-   :player (dom/getElement "player")})
+   :player (dom/getElement "player")
+   :grass (dom/getElement "grass")})
 
 (def colour->rgb
   {:blue "#127496"})
@@ -62,10 +70,17 @@
   [state]
   (let [{:keys [player]} @state
         [player-x player-y] player]
-    (draw-sprite @state player-x player-y cell-size :player)
+    (doseq [x (range game-x-cells) y (range game-y-cells)]
+      (draw-sprite @state x y cell-size :grass))
     (draw-sprite @state 1 2 cell-size :bones)
-    (draw-sprite @state 4 4 cell-size :flask))
+    (draw-sprite @state 4 4 cell-size :flask)
+    (draw-sprite @state player-x player-y cell-size :player))
   (.requestAnimationFrame js/window #(render-world state)))
+
+(defn boundary
+  [[x y]]
+  [(min (max x 0) (dec game-x-cells))
+   (min (max y 0) (dec game-y-cells))])
 
 (defn move-player
   [state direction]
@@ -74,12 +89,13 @@
            (let [{:keys [player]} current
                  [player-x player-y] player]
              (assoc current
-               :player (condp = direction
-                         :left [(dec player-x) player-y]
-                         :right [(inc player-x) player-y]
-                         :forward [player-x (dec player-y)]
-                         :back [player-x (inc player-y)]
-                         player))))))
+               :player (boundary
+                         (condp = direction
+                           :left [(dec player-x) player-y]
+                           :right [(inc player-x) player-y]
+                           :forward [player-x (dec player-y)]
+                           :back [player-x (inc player-y)]
+                           player)))))))
 
 (defn handle-keyevent
   [state keyevent]
