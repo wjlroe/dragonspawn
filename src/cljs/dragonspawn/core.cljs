@@ -7,14 +7,21 @@
             [goog.events.KeyCodes :as kcs]
             [goog.events.EventType :as event-type]))
 
-(def game-width 800)
-(def game-height 600)
-(def cell-size 32)
+(def game-width 2560)
+(def game-height 1440)
+(def cell-size 128)
 (def aspectRatio (float (/ 4 3)))
 (def time-limit 10)
 (def number-bones-needed 10)
 (def win-message "You won and can build a dragon")
 (def lose-message "You lost! The villagers will kill you now :(")
+(def reset-message "[Press n to start over]")
+(def title-message "Dragon Spawn")
+(def start-message ["You stole all the cabages! Oh noes!"
+                    "Some villagers are coming to find and kill you."
+                    (str "You have " time-limit " seconds to find " number-bones-needed)
+                    "dragon bones to build a dragon to defend yourself."
+                    "[Press any key to begin]"])
 
 (defn abs
   [number]
@@ -59,18 +66,18 @@
 
 (defn initial-state
   []
-  {:start-time (js/Date.)
-   :game-state :playing
+  {:game-state :start
    :item-locations (random-spawns)
    :inventory []
-   :player start-position} )
+   :player start-position})
 
 (def keycode->key
   {kcs/SPACE :space
    kcs/W :forward
    kcs/A :left
    kcs/S :back
-   kcs/D :right})
+   kcs/D :right
+   kcs/N :new-game})
 
 (def sprites
   {:bones (dom/getElement "bones")
@@ -97,11 +104,12 @@
     (.drawImage draw-context sprite x y size size)))
 
 (defn draw-text
-  ([state x y text] (draw-text state x y text "top"))
-  ([state x y text baseline] (draw-text state x y text baseline "right"))
-  ([state x y text baseline align]
+  ([state x y text] (draw-text state x y text "middle"))
+  ([state x y text baseline] (draw-text state x y text baseline "center"))
+  ([state x y text baseline align] (draw-text state x y text baseline align "4em"))
+  ([state x y text baseline align font-size]
    (let [[x y] (cell->coords x y)]
-     (set! (.-font draw-context) "bold 1.5em sans-serif")
+     (set! (.-font draw-context) (str "bold " font-size " sans-serif"))
      (set! (.-textBaseline draw-context) baseline)
      (set! (.-textAlign draw-context) align)
      (.fillText draw-context text x y))))
@@ -118,15 +126,27 @@
   [inventory]
   (>= (bone-count inventory) number-bones-needed))
 
+(defn draw-grass
+  [state]
+  (doseq [x (range game-x-cells) y (range game-y-cells)]
+    (draw-sprite state x y cell-size :grass)))
+
 (defmulti render :game-state)
+
+(defmethod render :start
+  [state]
+  (draw-grass state)
+  (let [x-mid (int (/ game-x-cells 2))]
+    (draw-text state x-mid 2 title-message "middle" "center" "5em")
+    (doseq [[y message] (map vector (range (count start-message)) start-message)]
+      (draw-text state x-mid (+ 3 y) message))))
 
 (defmethod render :playing
   [state]
   (let [{:keys [player start-time item-locations inventory]} state
         countdown (- time-limit (elapsed-time start-time))
         [player-x player-y] player]
-    (doseq [x (range game-x-cells) y (range game-y-cells)]
-      (draw-sprite state x y cell-size :grass))
+    (draw-grass state)
     (doseq [[[x y] sprite] item-locations]
       (draw-sprite state x y cell-size sprite))
     (draw-sprite state player-x player-y cell-size :player)
@@ -136,12 +156,14 @@
 (defmethod render :win
   [state]
   (let [x (int (/ game-x-cells 2))]
-    (draw-text state x 0 win-message "top" "center")))
+    (draw-text state x 0 win-message "top" "center")
+    (draw-text state x 1 reset-message "top" "center")))
 
 (defmethod render :lose
   [state]
   (let [x (int (/ game-x-cells 2))]
-    (draw-text state x 0 lose-message "top" "center")))
+    (draw-text state x 0 lose-message "top" "center")
+    (draw-text state x 1 reset-message "top" "center")))
 
 (defn render-world
   [state]
@@ -155,48 +177,69 @@
 
 (defn move-player
   [state direction]
-  (when (= :playing (:game-state @state))
-    (swap! state
-           (fn [current]
-             (let [{:keys [player inventory item-locations]} current
-                   [player-x player-y] player
-                   new-player (boundary
-                                (condp = direction
-                                  :left [(dec player-x) player-y]
-                                  :right [(inc player-x) player-y]
-                                  :forward [player-x (dec player-y)]
-                                  :back [player-x (inc player-y)]
-                                  player))
-                   item-at-player (get item-locations new-player)
-                   new-inventory (if item-at-player
-                                   (conj inventory item-at-player)
-                                   inventory)
-                   new-item-locations (if item-at-player
-                                        (dissoc item-locations new-player)
-                                        item-locations)]
-               (assoc current
-                      :player new-player
-                      :inventory new-inventory
-                      :item-locations new-item-locations))))))
+  (swap! state
+         (fn [current]
+           (let [{:keys [player inventory item-locations]} current
+                 [player-x player-y] player
+                 new-player (boundary
+                              (condp = direction
+                                :left [(dec player-x) player-y]
+                                :right [(inc player-x) player-y]
+                                :forward [player-x (dec player-y)]
+                                :back [player-x (inc player-y)]
+                                player))
+                 item-at-player (get item-locations new-player)
+                 new-inventory (if item-at-player
+                                 (conj inventory item-at-player)
+                                 inventory)
+                 new-item-locations (if item-at-player
+                                      (dissoc item-locations new-player)
+                                      item-locations)]
+             (assoc current
+                    :player new-player
+                    :inventory new-inventory
+                    :item-locations new-item-locations)))))
 
 (defn timeup?
   [start-time]
   (>= (elapsed-time start-time) time-limit))
 
+(defn playing?
+  [{:keys [game-state]}]
+  (= game-state :playing))
+
 (defn check-game
+  [state]
+  (when (playing? @state)
+    (swap! state
+           (fn [current]
+             (let [{:keys [game-state start-time inventory]} current]
+               (assoc current :game-state
+                      (cond
+                        (enough-bones? inventory) :win
+                        (timeup? start-time) :lose
+                        :else game-state)))))))
+
+(defn start-game
   [state]
   (swap! state
          (fn [current]
-           (let [{:keys [game-state start-time inventory]} current]
-             (assoc current :game-state
-                    (cond
-                      (enough-bones? inventory) :win
-                      (timeup? start-time) :lose
-                      :else game-state))))))
+           (assoc current
+                  :game-state :playing
+                  :start-time (js/Date.)))))
+
+(defn reset-game
+  [state keyevent]
+  (when (= keyevent :new-game)
+    (reset! state (initial-state))))
 
 (defn handle-keyevent
   [state keyevent]
-  (move-player state keyevent)
+  (let [{:keys [game-state]} @state]
+    (condp = game-state
+      :playing (move-player state keyevent)
+      :start (start-game state)
+      (reset-game state keyevent)))
   (log-state @state))
 
 (defn translate-keyboard-event
