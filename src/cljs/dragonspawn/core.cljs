@@ -12,6 +12,9 @@
 (def cell-size 32)
 (def aspectRatio (float (/ 4 3)))
 (def time-limit 10)
+(def number-bones-needed 10)
+(def win-message "You won and can build a dragon")
+(def lose-message "You lost! The villagers will kill you now :(")
 
 (defn abs
   [number]
@@ -40,10 +43,26 @@
   [(pixels->cell (/ game-width 2))
    (- (pixels->cell game-height) 1)])
 
+(defn random-location
+  []
+  (map (comp int rand) [(inc game-x-cells) game-y-cells]))
+
+(defn random-item-spawns
+  [item number]
+  (into {}
+        (map #(vector % item) (take number (repeatedly random-location)))))
+
+(defn random-spawns
+  []
+  (merge (random-item-spawns :flask 5)
+         (random-item-spawns :bones 30)))
+
 (defn initial-state
   []
   {:start-time (js/Date.)
-   :state :playing
+   :game-state :playing
+   :item-locations (random-spawns)
+   :inventory []
    :player start-position} )
 
 (def keycode->key
@@ -78,33 +97,51 @@
     (.drawImage draw-context sprite x y size size)))
 
 (defn draw-text
-  [state x y text]
-  (let [[x y] (cell->coords x y)]
-    (set! (.-font draw-context) "bold 1.5em sans-serif")
-    (set! (.-textBaseline draw-context) "top")
-    (set! (.-textAlign draw-context) "right")
-    (.fillText draw-context text x y)))
+  ([state x y text] (draw-text state x y text "top"))
+  ([state x y text baseline] (draw-text state x y text baseline "right"))
+  ([state x y text baseline align]
+   (let [[x y] (cell->coords x y)]
+     (set! (.-font draw-context) "bold 1.5em sans-serif")
+     (set! (.-textBaseline draw-context) baseline)
+     (set! (.-textAlign draw-context) align)
+     (.fillText draw-context text x y))))
 
 (defn elapsed-time
   [start-time]
   (int (/ (- (js/Date.) start-time) 1000)))
 
-(defmulti render :state)
+(defn bone-count
+  [inventory]
+  (count (filter #(= :bones %) inventory)))
+
+(defn enough-bones?
+  [inventory]
+  (>= (bone-count inventory) number-bones-needed))
+
+(defmulti render :game-state)
 
 (defmethod render :playing
   [state]
-  (let [{:keys [player start-time]} state
+  (let [{:keys [player start-time item-locations inventory]} state
         countdown (- time-limit (elapsed-time start-time))
         [player-x player-y] player]
     (doseq [x (range game-x-cells) y (range game-y-cells)]
       (draw-sprite state x y cell-size :grass))
-    (draw-sprite state 1 2 cell-size :bones)
-    (draw-sprite state 4 4 cell-size :flask)
+    (doseq [[[x y] sprite] item-locations]
+      (draw-sprite state x y cell-size sprite))
     (draw-sprite state player-x player-y cell-size :player)
-    (draw-text state game-x-cells 0 (str countdown " seconds"))))
+    (draw-text state 0 0 (str (bone-count inventory) " bones") "top" "left")
+    (draw-text state game-x-cells 0 (str countdown " seconds") "top" "right")))
 
-(defmethod render :finished
-  [state])
+(defmethod render :win
+  [state]
+  (let [x (int (/ game-x-cells 2))]
+    (draw-text state x 0 win-message "top" "center")))
+
+(defmethod render :lose
+  [state]
+  (let [x (int (/ game-x-cells 2))]
+    (draw-text state x 0 lose-message "top" "center")))
 
 (defn render-world
   [state]
@@ -118,18 +155,29 @@
 
 (defn move-player
   [state direction]
-  (swap! state
-         (fn [current]
-           (let [{:keys [player]} current
-                 [player-x player-y] player]
-             (assoc current
-                    :player (boundary
-                              (condp = direction
-                                :left [(dec player-x) player-y]
-                                :right [(inc player-x) player-y]
-                                :forward [player-x (dec player-y)]
-                                :back [player-x (inc player-y)]
-                                player)))))))
+  (when (= :playing (:game-state @state))
+    (swap! state
+           (fn [current]
+             (let [{:keys [player inventory item-locations]} current
+                   [player-x player-y] player
+                   new-player (boundary
+                                (condp = direction
+                                  :left [(dec player-x) player-y]
+                                  :right [(inc player-x) player-y]
+                                  :forward [player-x (dec player-y)]
+                                  :back [player-x (inc player-y)]
+                                  player))
+                   item-at-player (get item-locations new-player)
+                   new-inventory (if item-at-player
+                                   (conj inventory item-at-player)
+                                   inventory)
+                   new-item-locations (if item-at-player
+                                        (dissoc item-locations new-player)
+                                        item-locations)]
+               (assoc current
+                      :player new-player
+                      :inventory new-inventory
+                      :item-locations new-item-locations))))))
 
 (defn timeup?
   [start-time]
@@ -139,16 +187,17 @@
   [state]
   (swap! state
          (fn [current]
-           (let [{:keys [game-state start-time]} current]
-             (if (timeup? start-time)
-               (assoc current :state :finished)
-               current)))))
+           (let [{:keys [game-state start-time inventory]} current]
+             (assoc current :game-state
+                    (cond
+                      (enough-bones? inventory) :win
+                      (timeup? start-time) :lose
+                      :else game-state))))))
 
 (defn handle-keyevent
   [state keyevent]
-  (.log js/console "you pressed:" keyevent)
-  (log-state @state)
-  (move-player state keyevent))
+  (move-player state keyevent)
+  (log-state @state))
 
 (defn translate-keyboard-event
   [e]
