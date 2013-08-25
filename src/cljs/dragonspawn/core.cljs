@@ -110,13 +110,13 @@
            (let [{:keys [player]} current
                  [player-x player-y] player]
              (assoc current
-               :player (boundary
-                         (condp = direction
-                           :left [(dec player-x) player-y]
-                           :right [(inc player-x) player-y]
-                           :forward [player-x (dec player-y)]
-                           :back [player-x (inc player-y)]
-                           player)))))))
+                    :player (boundary
+                              (condp = direction
+                                :left [(dec player-x) player-y]
+                                :right [(inc player-x) player-y]
+                                :forward [player-x (dec player-y)]
+                                :back [player-x (inc player-y)]
+                                player)))))))
 
 (defn timeup?
   [start-time]
