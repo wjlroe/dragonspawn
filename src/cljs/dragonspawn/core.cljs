@@ -29,9 +29,22 @@
 (def game-x-cells (pixels->cell game-width))
 (def game-y-cells (pixels->cell game-height))
 
-(defn surface-element
+(def surface
+  (let [surface (dom/getElement "surface")]
+    (set! (.-width surface) game-width)
+    (set! (.-height surface) game-height)
+    surface))
+(def draw-context (.getContext surface "2d"))
+
+(def start-position
+  [(pixels->cell (/ game-width 2))
+   (- (pixels->cell game-height) 1)])
+
+(defn initial-state
   []
-  (dom/getElement "surface"))
+  {:start-time (js/Date.)
+   :state :playing
+   :player start-position} )
 
 (def keycode->key
   {kcs/SPACE :space
@@ -50,11 +63,8 @@
   {:blue "#127496"})
 
 (defn log-state
-  [{:keys [surface-width surface-height surface player]}]
+  [{:keys [player]}]
   (let [[player-x player-y] player]
-    (.log js/console "surface width:" surface-width
-          "surface height:" surface-height)
-    (.log js/console "surface:" surface)
     (.log js/console "player x" player-x "player y" player-y)))
 
 (defn draw-square
@@ -62,13 +72,13 @@
   )
 
 (defn draw-sprite
-  [{:keys [draw-context]} x y size sprite]
+  [state x y size sprite]
   (let [sprite (sprites sprite)
         [x y] (cell->coords x y)]
     (.drawImage draw-context sprite x y size size)))
 
 (defn draw-text
-  [{:keys [draw-context]} x y text]
+  [state x y text]
   (let [[x y] (cell->coords x y)]
     (set! (.-font draw-context) "bold 1.5em sans-serif")
     (set! (.-textBaseline draw-context) "top")
@@ -92,6 +102,9 @@
     (draw-sprite state 4 4 cell-size :flask)
     (draw-sprite state player-x player-y cell-size :player)
     (draw-text state game-x-cells 0 (str countdown " seconds"))))
+
+(defmethod render :finished
+  [state])
 
 (defn render-world
   [state]
@@ -157,9 +170,8 @@
   (str (int size) ".px"))
 
 (defn resize
-  [state e]
-  (let [{:keys [draw-context surface]} @state
-        winWidth (.-innerWidth js/window)
+  [& args]
+  (let [winWidth (.-innerWidth js/window)
         winHeight (.-innerHeight js/window)
         currentRatio (float (/ winWidth winHeight))
         [width height] (if (> currentRatio aspectRatio)
@@ -173,27 +185,19 @@
                   :marginTop (px top)
                   :marginLeft (px left)})))
 
-(defn ^:export main
-  []
-  (let [surface (surface-element)
-        draw-context (.getContext surface "2d")
-        timer (goog.Timer. 200)
-        state (atom {:surface surface
-                     :draw-context draw-context
-                     :surface-width (.-width surface)
-                     :surface-height (.-height surface)
-                     :start-time (js/Date.)
-                     :state :playing
-                     :player [(pixels->cell (/ game-width 2))
-                              (- (pixels->cell game-height) 1)]})]
-    (set! (.-width surface) game-width)
-    (set! (.-height surface) game-height)
+(defn setup-events
+  [state]
+  (let [timer (goog.Timer. 200)]
     (events/listen timer goog.Timer/TICK (partial check-game state))
-    (events/listen js/window event-type/RESIZE (partial resize state))
+    (events/listen js/window event-type/RESIZE resize)
     (events/listen js/window event-type/KEYDOWN (partial keydown state))
-    (.start timer)
-    (resize state)
-    (log-state @state)
+    (.start timer)))
+
+(defn main
+  []
+  (let [state (atom (initial-state))]
+    (setup-events state)
+    (resize)
     (render-world state)))
 
 (main)
