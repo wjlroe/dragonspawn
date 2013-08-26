@@ -12,6 +12,7 @@
 /target
 /resources/public/**/*.js
 /resources/public/**/*.cljs
+!/resources/public/game*.js
 /_deploy
 .DS_Store
 .lein-repl-history
