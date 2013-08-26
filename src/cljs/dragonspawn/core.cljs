@@ -47,6 +47,7 @@
     (set! (.-width surface) game-width)
     (set! (.-height surface) game-height)
     surface))
+
 (def draw-context (.getContext surface "2d"))
 
 (def start-position
@@ -96,10 +97,6 @@
   (let [[player-x player-y] player]
     (.log js/console "player x" player-x "player y" player-y)))
 
-(defn draw-square
-  [{:keys [draw-context]} x y size colour]
-  )
-
 (defn draw-sprite
   [state x y size sprite]
   (let [sprite (sprites sprite)
@@ -119,7 +116,10 @@
 
 (defn elapsed-time
   [start-time]
-  (int (/ (- (js/Date.) start-time) 1000)))
+  (-> (js/Date.)
+      (- start-time)
+      (/ 1000)
+      int))
 
 (defn bone-count
   [inventory]
