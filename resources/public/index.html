@@ -43,6 +43,18 @@ canvas { display:block; position: absolute; left: 50%; top: 50%; overflow: hidde
       <img src="images/grass.png" alt="grass" id="grass">
     </div>
     <canvas id="surface"></canvas>
+    <audio id="soundtrack" loop="true" autoplay="true">
+      <source src="music/music.mp3" type='audio/mpeg; codecs="mp3"'>
+      <source src="music/music.ogg" type='audio/ogg; codecs="vorbis"'>
+    </audio>
+    <audio id="pickup">
+      <source src="music/pickup.mp3" type='audio/mpeg; codecs="mp3"'>
+      <source src="music/pickup.ogg" type='audio/ogg; codecs="vorbis"'>
+    </audio>
+    <audio id="potion">
+      <source src="music/potion.mp3" type='audio/mpeg; codecs="mp3"'>
+      <source src="music/potion.ogg" type='audio/ogg; codecs="vorbis"'>
+    </audio>
     <script type="text/javascript" src="game.js"></script>
   </body>
 </html>

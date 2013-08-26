@@ -39,6 +39,9 @@
 (def game-x-cells (pixels->cell game-width))
 (def game-y-cells (pixels->cell game-height))
 
+(def pickup (dom/getElement "pickup"))
+(def potion (dom/getElement "potion"))
+
 (def surface
   (let [surface (dom/getElement "surface")]
     (set! (.-width surface) game-width)
@@ -189,6 +192,10 @@
                                 :back [player-x (inc player-y)]
                                 player))
                  item-at-player (get item-locations new-player)
+                 sounds (condp = item-at-player
+                          :potion (.play potion)
+                          :bones (.play pickup)
+                          nil)
                  new-inventory (if item-at-player
                                  (conj inventory item-at-player)
                                  inventory)
