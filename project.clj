@@ -8,10 +8,14 @@
                  [domina "1.0.0"]]
   :plugins [[lein-cljsbuild "0.3.2"]]
   :source-paths ["src/clj"]
-  :cljsbuild {:builds [{
+  :cljsbuild {:builds [{:id "dev"
                         :source-paths ["src/cljs"]
-                        :compiler {
-                                   :output-dir "resources/public"
+                        :compiler {:output-dir "resources/public"
                                    :output-to "resources/public/game.js"
                                    :optimizations :whitespace
-                                   :pretty-print true}}]})
+                                   :pretty-print true}}
+                       {:id "prod"
+                        :source-paths ["src/cljs"]
+                        :compiler {:output-to "resources/public/game.adv.js"
+                                   :pretty-print false
+                                   :optimizations :advanced}}]})
