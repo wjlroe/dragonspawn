@@ -7,9 +7,9 @@
             [goog.events.KeyCodes :as kcs]
             [goog.events.EventType :as event-type]))
 
-(def game-width 2560)
-(def game-height 1440)
-(def cell-size 128)
+(def game-width 2400)
+(def game-height 1800)
+(def cell-size 120)
 (def aspectRatio (float (/ 4 3)))
 (def time-limit 10)
 (def number-bones-needed 10)
