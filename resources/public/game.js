@@ -28383,8 +28383,8 @@ dragonspawn.core.random_location = function random_location() {
   return cljs.core.map.call(null, cljs.core.comp.call(null, cljs.core.int$, cljs.core.rand), cljs.core.PersistentVector.fromArray([dragonspawn.core.game_x_cells + 1, dragonspawn.core.game_y_cells], true))
 };
 dragonspawn.core.random_item_spawns = function random_item_spawns(item, number) {
-  return cljs.core.into.call(null, cljs.core.PersistentArrayMap.EMPTY, cljs.core.map.call(null, function(p1__9636_SHARP_) {
-    return cljs.core.vector.call(null, p1__9636_SHARP_, item)
+  return cljs.core.into.call(null, cljs.core.PersistentArrayMap.EMPTY, cljs.core.map.call(null, function(p1__4792_SHARP_) {
+    return cljs.core.vector.call(null, p1__4792_SHARP_, item)
   }, cljs.core.take.call(null, number, cljs.core.repeatedly.call(null, dragonspawn.core.random_location))))
 };
 dragonspawn.core.random_spawns = function random_spawns() {
@@ -28396,20 +28396,20 @@ dragonspawn.core.initial_state = function initial_state() {
 dragonspawn.core.keycode__GT_key = cljs.core.PersistentArrayMap.fromArray([goog.events.KeyCodes.SPACE, "\ufdd0:space", goog.events.KeyCodes.W, "\ufdd0:forward", goog.events.KeyCodes.A, "\ufdd0:left", goog.events.KeyCodes.S, "\ufdd0:back", goog.events.KeyCodes.D, "\ufdd0:right", goog.events.KeyCodes.N, "\ufdd0:new-game"], true);
 dragonspawn.core.sprites = cljs.core.PersistentArrayMap.fromArray(["\ufdd0:bones", goog.dom.getElement("bones"), "\ufdd0:flask", goog.dom.getElement("flask"), "\ufdd0:player", goog.dom.getElement("player"), "\ufdd0:grass", goog.dom.getElement("grass")], true);
 dragonspawn.core.colour__GT_rgb = cljs.core.PersistentArrayMap.fromArray(["\ufdd0:blue", "#127496"], true);
-dragonspawn.core.log_state = function log_state(p__9637) {
-  var map__9640 = p__9637;
-  var map__9640__$1 = cljs.core.seq_QMARK_.call(null, map__9640) ? cljs.core.apply.call(null, cljs.core.hash_map, map__9640) : map__9640;
-  var player = cljs.core.get.call(null, map__9640__$1, "\ufdd0:player");
-  var vec__9641 = player;
-  var player_x = cljs.core.nth.call(null, vec__9641, 0, null);
-  var player_y = cljs.core.nth.call(null, vec__9641, 1, null);
+dragonspawn.core.log_state = function log_state(p__4793) {
+  var map__4796 = p__4793;
+  var map__4796__$1 = cljs.core.seq_QMARK_.call(null, map__4796) ? cljs.core.apply.call(null, cljs.core.hash_map, map__4796) : map__4796;
+  var player = cljs.core.get.call(null, map__4796__$1, "\ufdd0:player");
+  var vec__4797 = player;
+  var player_x = cljs.core.nth.call(null, vec__4797, 0, null);
+  var player_y = cljs.core.nth.call(null, vec__4797, 1, null);
   return console.log("player x", player_x, "player y", player_y)
 };
 dragonspawn.core.draw_sprite = function draw_sprite(state, x, y, size, sprite) {
   var sprite__$1 = dragonspawn.core.sprites.call(null, sprite);
-  var vec__9643 = dragonspawn.core.cell__GT_coords.call(null, x, y);
-  var x__$1 = cljs.core.nth.call(null, vec__9643, 0, null);
-  var y__$1 = cljs.core.nth.call(null, vec__9643, 1, null);
+  var vec__4799 = dragonspawn.core.cell__GT_coords.call(null, x, y);
+  var x__$1 = cljs.core.nth.call(null, vec__4799, 0, null);
+  var y__$1 = cljs.core.nth.call(null, vec__4799, 1, null);
   return dragonspawn.core.draw_context.drawImage(sprite__$1, x__$1, y__$1, size, size)
 };
 dragonspawn.core.draw_text = function() {
@@ -28424,9 +28424,9 @@ dragonspawn.core.draw_text = function() {
     return draw_text.call(null, state, x, y, text, baseline, align, "4em")
   };
   var draw_text__7 = function(state, x, y, text, baseline, align, font_size) {
-    var vec__9645 = dragonspawn.core.cell__GT_coords.call(null, x, y);
-    var x__$1 = cljs.core.nth.call(null, vec__9645, 0, null);
-    var y__$1 = cljs.core.nth.call(null, vec__9645, 1, null);
+    var vec__4801 = dragonspawn.core.cell__GT_coords.call(null, x, y);
+    var x__$1 = cljs.core.nth.call(null, vec__4801, 0, null);
+    var y__$1 = cljs.core.nth.call(null, vec__4801, 1, null);
     dragonspawn.core.draw_context.font = [cljs.core.str("bold "), cljs.core.str(font_size), cljs.core.str(" sans-serif")].join("");
     dragonspawn.core.draw_context.textBaseline = baseline;
     dragonspawn.core.draw_context.textAlign = align;
@@ -28455,64 +28455,64 @@ dragonspawn.core.elapsed_time = function elapsed_time(start_time) {
   return(new Date - start_time) / 1E3 | 0
 };
 dragonspawn.core.bone_count = function bone_count(inventory) {
-  return cljs.core.count.call(null, cljs.core.filter.call(null, function(p1__9646_SHARP_) {
-    return cljs.core._EQ_.call(null, "\ufdd0:bones", p1__9646_SHARP_)
+  return cljs.core.count.call(null, cljs.core.filter.call(null, function(p1__4802_SHARP_) {
+    return cljs.core._EQ_.call(null, "\ufdd0:bones", p1__4802_SHARP_)
   }, inventory))
 };
 dragonspawn.core.enough_bones_QMARK_ = function enough_bones_QMARK_(inventory) {
   return dragonspawn.core.bone_count.call(null, inventory) >= dragonspawn.core.number_bones_needed
 };
 dragonspawn.core.draw_grass = function draw_grass(state) {
-  var seq__9659 = cljs.core.seq.call(null, cljs.core.range.call(null, dragonspawn.core.game_x_cells));
-  var chunk__9664 = null;
-  var count__9665 = 0;
-  var i__9666 = 0;
+  var seq__4815 = cljs.core.seq.call(null, cljs.core.range.call(null, dragonspawn.core.game_x_cells));
+  var chunk__4820 = null;
+  var count__4821 = 0;
+  var i__4822 = 0;
   while(true) {
-    if(i__9666 < count__9665) {
-      var x = cljs.core._nth.call(null, chunk__9664, i__9666);
-      var seq__9667_9671 = cljs.core.seq.call(null, cljs.core.range.call(null, dragonspawn.core.game_y_cells));
-      var chunk__9668_9672 = null;
-      var count__9669_9673 = 0;
-      var i__9670_9674 = 0;
+    if(i__4822 < count__4821) {
+      var x = cljs.core._nth.call(null, chunk__4820, i__4822);
+      var seq__4823_4827 = cljs.core.seq.call(null, cljs.core.range.call(null, dragonspawn.core.game_y_cells));
+      var chunk__4824_4828 = null;
+      var count__4825_4829 = 0;
+      var i__4826_4830 = 0;
       while(true) {
-        if(i__9670_9674 < count__9669_9673) {
-          var y_9675 = cljs.core._nth.call(null, chunk__9668_9672, i__9670_9674);
-          dragonspawn.core.draw_sprite.call(null, state, x, y_9675, dragonspawn.core.cell_size, "\ufdd0:grass");
-          var G__9676 = seq__9667_9671;
-          var G__9677 = chunk__9668_9672;
-          var G__9678 = count__9669_9673;
-          var G__9679 = i__9670_9674 + 1;
-          seq__9667_9671 = G__9676;
-          chunk__9668_9672 = G__9677;
-          count__9669_9673 = G__9678;
-          i__9670_9674 = G__9679;
+        if(i__4826_4830 < count__4825_4829) {
+          var y_4831 = cljs.core._nth.call(null, chunk__4824_4828, i__4826_4830);
+          dragonspawn.core.draw_sprite.call(null, state, x, y_4831, dragonspawn.core.cell_size, "\ufdd0:grass");
+          var G__4832 = seq__4823_4827;
+          var G__4833 = chunk__4824_4828;
+          var G__4834 = count__4825_4829;
+          var G__4835 = i__4826_4830 + 1;
+          seq__4823_4827 = G__4832;
+          chunk__4824_4828 = G__4833;
+          count__4825_4829 = G__4834;
+          i__4826_4830 = G__4835;
           continue
         }else {
-          var temp__4092__auto___9680 = cljs.core.seq.call(null, seq__9667_9671);
-          if(temp__4092__auto___9680) {
-            var seq__9667_9681__$1 = temp__4092__auto___9680;
-            if(cljs.core.chunked_seq_QMARK_.call(null, seq__9667_9681__$1)) {
-              var c__3039__auto___9682 = cljs.core.chunk_first.call(null, seq__9667_9681__$1);
-              var G__9683 = cljs.core.chunk_rest.call(null, seq__9667_9681__$1);
-              var G__9684 = c__3039__auto___9682;
-              var G__9685 = cljs.core.count.call(null, c__3039__auto___9682);
-              var G__9686 = 0;
-              seq__9667_9671 = G__9683;
-              chunk__9668_9672 = G__9684;
-              count__9669_9673 = G__9685;
-              i__9670_9674 = G__9686;
+          var temp__4092__auto___4836 = cljs.core.seq.call(null, seq__4823_4827);
+          if(temp__4092__auto___4836) {
+            var seq__4823_4837__$1 = temp__4092__auto___4836;
+            if(cljs.core.chunked_seq_QMARK_.call(null, seq__4823_4837__$1)) {
+              var c__3039__auto___4838 = cljs.core.chunk_first.call(null, seq__4823_4837__$1);
+              var G__4839 = cljs.core.chunk_rest.call(null, seq__4823_4837__$1);
+              var G__4840 = c__3039__auto___4838;
+              var G__4841 = cljs.core.count.call(null, c__3039__auto___4838);
+              var G__4842 = 0;
+              seq__4823_4827 = G__4839;
+              chunk__4824_4828 = G__4840;
+              count__4825_4829 = G__4841;
+              i__4826_4830 = G__4842;
               continue
             }else {
-              var y_9687 = cljs.core.first.call(null, seq__9667_9681__$1);
-              dragonspawn.core.draw_sprite.call(null, state, x, y_9687, dragonspawn.core.cell_size, "\ufdd0:grass");
-              var G__9688 = cljs.core.next.call(null, seq__9667_9681__$1);
-              var G__9689 = null;
-              var G__9690 = 0;
-              var G__9691 = 0;
-              seq__9667_9671 = G__9688;
-              chunk__9668_9672 = G__9689;
-              count__9669_9673 = G__9690;
-              i__9670_9674 = G__9691;
+              var y_4843 = cljs.core.first.call(null, seq__4823_4837__$1);
+              dragonspawn.core.draw_sprite.call(null, state, x, y_4843, dragonspawn.core.cell_size, "\ufdd0:grass");
+              var G__4844 = cljs.core.next.call(null, seq__4823_4837__$1);
+              var G__4845 = null;
+              var G__4846 = 0;
+              var G__4847 = 0;
+              seq__4823_4827 = G__4844;
+              chunk__4824_4828 = G__4845;
+              count__4825_4829 = G__4846;
+              i__4826_4830 = G__4847;
               continue
             }
           }else {
@@ -28520,75 +28520,75 @@ dragonspawn.core.draw_grass = function draw_grass(state) {
         }
         break
       }
-      var G__9692 = seq__9659;
-      var G__9693 = chunk__9664;
-      var G__9694 = count__9665;
-      var G__9695 = i__9666 + 1;
-      seq__9659 = G__9692;
-      chunk__9664 = G__9693;
-      count__9665 = G__9694;
-      i__9666 = G__9695;
+      var G__4848 = seq__4815;
+      var G__4849 = chunk__4820;
+      var G__4850 = count__4821;
+      var G__4851 = i__4822 + 1;
+      seq__4815 = G__4848;
+      chunk__4820 = G__4849;
+      count__4821 = G__4850;
+      i__4822 = G__4851;
       continue
     }else {
-      var temp__4092__auto__ = cljs.core.seq.call(null, seq__9659);
+      var temp__4092__auto__ = cljs.core.seq.call(null, seq__4815);
       if(temp__4092__auto__) {
-        var seq__9659__$1 = temp__4092__auto__;
-        if(cljs.core.chunked_seq_QMARK_.call(null, seq__9659__$1)) {
-          var c__3039__auto__ = cljs.core.chunk_first.call(null, seq__9659__$1);
-          var G__9696 = cljs.core.chunk_rest.call(null, seq__9659__$1);
-          var G__9697 = c__3039__auto__;
-          var G__9698 = cljs.core.count.call(null, c__3039__auto__);
-          var G__9699 = 0;
-          seq__9659 = G__9696;
-          chunk__9664 = G__9697;
-          count__9665 = G__9698;
-          i__9666 = G__9699;
+        var seq__4815__$1 = temp__4092__auto__;
+        if(cljs.core.chunked_seq_QMARK_.call(null, seq__4815__$1)) {
+          var c__3039__auto__ = cljs.core.chunk_first.call(null, seq__4815__$1);
+          var G__4852 = cljs.core.chunk_rest.call(null, seq__4815__$1);
+          var G__4853 = c__3039__auto__;
+          var G__4854 = cljs.core.count.call(null, c__3039__auto__);
+          var G__4855 = 0;
+          seq__4815 = G__4852;
+          chunk__4820 = G__4853;
+          count__4821 = G__4854;
+          i__4822 = G__4855;
           continue
         }else {
-          var x = cljs.core.first.call(null, seq__9659__$1);
-          var seq__9660_9700 = cljs.core.seq.call(null, cljs.core.range.call(null, dragonspawn.core.game_y_cells));
-          var chunk__9661_9701 = null;
-          var count__9662_9702 = 0;
-          var i__9663_9703 = 0;
+          var x = cljs.core.first.call(null, seq__4815__$1);
+          var seq__4816_4856 = cljs.core.seq.call(null, cljs.core.range.call(null, dragonspawn.core.game_y_cells));
+          var chunk__4817_4857 = null;
+          var count__4818_4858 = 0;
+          var i__4819_4859 = 0;
           while(true) {
-            if(i__9663_9703 < count__9662_9702) {
-              var y_9704 = cljs.core._nth.call(null, chunk__9661_9701, i__9663_9703);
-              dragonspawn.core.draw_sprite.call(null, state, x, y_9704, dragonspawn.core.cell_size, "\ufdd0:grass");
-              var G__9705 = seq__9660_9700;
-              var G__9706 = chunk__9661_9701;
-              var G__9707 = count__9662_9702;
-              var G__9708 = i__9663_9703 + 1;
-              seq__9660_9700 = G__9705;
-              chunk__9661_9701 = G__9706;
-              count__9662_9702 = G__9707;
-              i__9663_9703 = G__9708;
+            if(i__4819_4859 < count__4818_4858) {
+              var y_4860 = cljs.core._nth.call(null, chunk__4817_4857, i__4819_4859);
+              dragonspawn.core.draw_sprite.call(null, state, x, y_4860, dragonspawn.core.cell_size, "\ufdd0:grass");
+              var G__4861 = seq__4816_4856;
+              var G__4862 = chunk__4817_4857;
+              var G__4863 = count__4818_4858;
+              var G__4864 = i__4819_4859 + 1;
+              seq__4816_4856 = G__4861;
+              chunk__4817_4857 = G__4862;
+              count__4818_4858 = G__4863;
+              i__4819_4859 = G__4864;
               continue
             }else {
-              var temp__4092__auto___9709__$1 = cljs.core.seq.call(null, seq__9660_9700);
-              if(temp__4092__auto___9709__$1) {
-                var seq__9660_9710__$1 = temp__4092__auto___9709__$1;
-                if(cljs.core.chunked_seq_QMARK_.call(null, seq__9660_9710__$1)) {
-                  var c__3039__auto___9711 = cljs.core.chunk_first.call(null, seq__9660_9710__$1);
-                  var G__9712 = cljs.core.chunk_rest.call(null, seq__9660_9710__$1);
-                  var G__9713 = c__3039__auto___9711;
-                  var G__9714 = cljs.core.count.call(null, c__3039__auto___9711);
-                  var G__9715 = 0;
-                  seq__9660_9700 = G__9712;
-                  chunk__9661_9701 = G__9713;
-                  count__9662_9702 = G__9714;
-                  i__9663_9703 = G__9715;
+              var temp__4092__auto___4865__$1 = cljs.core.seq.call(null, seq__4816_4856);
+              if(temp__4092__auto___4865__$1) {
+                var seq__4816_4866__$1 = temp__4092__auto___4865__$1;
+                if(cljs.core.chunked_seq_QMARK_.call(null, seq__4816_4866__$1)) {
+                  var c__3039__auto___4867 = cljs.core.chunk_first.call(null, seq__4816_4866__$1);
+                  var G__4868 = cljs.core.chunk_rest.call(null, seq__4816_4866__$1);
+                  var G__4869 = c__3039__auto___4867;
+                  var G__4870 = cljs.core.count.call(null, c__3039__auto___4867);
+                  var G__4871 = 0;
+                  seq__4816_4856 = G__4868;
+                  chunk__4817_4857 = G__4869;
+                  count__4818_4858 = G__4870;
+                  i__4819_4859 = G__4871;
                   continue
                 }else {
-                  var y_9716 = cljs.core.first.call(null, seq__9660_9710__$1);
-                  dragonspawn.core.draw_sprite.call(null, state, x, y_9716, dragonspawn.core.cell_size, "\ufdd0:grass");
-                  var G__9717 = cljs.core.next.call(null, seq__9660_9710__$1);
-                  var G__9718 = null;
-                  var G__9719 = 0;
-                  var G__9720 = 0;
-                  seq__9660_9700 = G__9717;
-                  chunk__9661_9701 = G__9718;
-                  count__9662_9702 = G__9719;
-                  i__9663_9703 = G__9720;
+                  var y_4872 = cljs.core.first.call(null, seq__4816_4866__$1);
+                  dragonspawn.core.draw_sprite.call(null, state, x, y_4872, dragonspawn.core.cell_size, "\ufdd0:grass");
+                  var G__4873 = cljs.core.next.call(null, seq__4816_4866__$1);
+                  var G__4874 = null;
+                  var G__4875 = 0;
+                  var G__4876 = 0;
+                  seq__4816_4856 = G__4873;
+                  chunk__4817_4857 = G__4874;
+                  count__4818_4858 = G__4875;
+                  i__4819_4859 = G__4876;
                   continue
                 }
               }else {
@@ -28596,14 +28596,14 @@ dragonspawn.core.draw_grass = function draw_grass(state) {
             }
             break
           }
-          var G__9721 = cljs.core.next.call(null, seq__9659__$1);
-          var G__9722 = null;
-          var G__9723 = 0;
-          var G__9724 = 0;
-          seq__9659 = G__9721;
-          chunk__9664 = G__9722;
-          count__9665 = G__9723;
-          i__9666 = G__9724;
+          var G__4877 = cljs.core.next.call(null, seq__4815__$1);
+          var G__4878 = null;
+          var G__4879 = 0;
+          var G__4880 = 0;
+          seq__4815 = G__4877;
+          chunk__4820 = G__4878;
+          count__4821 = G__4879;
+          i__4822 = G__4880;
           continue
         }
       }else {
@@ -28625,53 +28625,53 @@ cljs.core._add_method.call(null, dragonspawn.core.render, "\ufdd0:start", functi
   dragonspawn.core.draw_grass.call(null, state);
   var x_mid = dragonspawn.core.game_x_cells / 2 | 0;
   dragonspawn.core.draw_text.call(null, state, x_mid, 2, dragonspawn.core.title_message, "middle", "center", "5em");
-  var seq__9725 = cljs.core.seq.call(null, cljs.core.map.call(null, cljs.core.vector, cljs.core.range.call(null, cljs.core.count.call(null, dragonspawn.core.start_message)), dragonspawn.core.start_message));
-  var chunk__9726 = null;
-  var count__9727 = 0;
-  var i__9728 = 0;
+  var seq__4881 = cljs.core.seq.call(null, cljs.core.map.call(null, cljs.core.vector, cljs.core.range.call(null, cljs.core.count.call(null, dragonspawn.core.start_message)), dragonspawn.core.start_message));
+  var chunk__4882 = null;
+  var count__4883 = 0;
+  var i__4884 = 0;
   while(true) {
-    if(i__9728 < count__9727) {
-      var vec__9729 = cljs.core._nth.call(null, chunk__9726, i__9728);
-      var y = cljs.core.nth.call(null, vec__9729, 0, null);
-      var message = cljs.core.nth.call(null, vec__9729, 1, null);
+    if(i__4884 < count__4883) {
+      var vec__4885 = cljs.core._nth.call(null, chunk__4882, i__4884);
+      var y = cljs.core.nth.call(null, vec__4885, 0, null);
+      var message = cljs.core.nth.call(null, vec__4885, 1, null);
       dragonspawn.core.draw_text.call(null, state, x_mid, 3 + y, message);
-      var G__9731 = seq__9725;
-      var G__9732 = chunk__9726;
-      var G__9733 = count__9727;
-      var G__9734 = i__9728 + 1;
-      seq__9725 = G__9731;
-      chunk__9726 = G__9732;
-      count__9727 = G__9733;
-      i__9728 = G__9734;
+      var G__4887 = seq__4881;
+      var G__4888 = chunk__4882;
+      var G__4889 = count__4883;
+      var G__4890 = i__4884 + 1;
+      seq__4881 = G__4887;
+      chunk__4882 = G__4888;
+      count__4883 = G__4889;
+      i__4884 = G__4890;
       continue
     }else {
-      var temp__4092__auto__ = cljs.core.seq.call(null, seq__9725);
+      var temp__4092__auto__ = cljs.core.seq.call(null, seq__4881);
       if(temp__4092__auto__) {
-        var seq__9725__$1 = temp__4092__auto__;
-        if(cljs.core.chunked_seq_QMARK_.call(null, seq__9725__$1)) {
-          var c__3039__auto__ = cljs.core.chunk_first.call(null, seq__9725__$1);
-          var G__9735 = cljs.core.chunk_rest.call(null, seq__9725__$1);
-          var G__9736 = c__3039__auto__;
-          var G__9737 = cljs.core.count.call(null, c__3039__auto__);
-          var G__9738 = 0;
-          seq__9725 = G__9735;
-          chunk__9726 = G__9736;
-          count__9727 = G__9737;
-          i__9728 = G__9738;
+        var seq__4881__$1 = temp__4092__auto__;
+        if(cljs.core.chunked_seq_QMARK_.call(null, seq__4881__$1)) {
+          var c__3039__auto__ = cljs.core.chunk_first.call(null, seq__4881__$1);
+          var G__4891 = cljs.core.chunk_rest.call(null, seq__4881__$1);
+          var G__4892 = c__3039__auto__;
+          var G__4893 = cljs.core.count.call(null, c__3039__auto__);
+          var G__4894 = 0;
+          seq__4881 = G__4891;
+          chunk__4882 = G__4892;
+          count__4883 = G__4893;
+          i__4884 = G__4894;
           continue
         }else {
-          var vec__9730 = cljs.core.first.call(null, seq__9725__$1);
-          var y = cljs.core.nth.call(null, vec__9730, 0, null);
-          var message = cljs.core.nth.call(null, vec__9730, 1, null);
+          var vec__4886 = cljs.core.first.call(null, seq__4881__$1);
+          var y = cljs.core.nth.call(null, vec__4886, 0, null);
+          var message = cljs.core.nth.call(null, vec__4886, 1, null);
           dragonspawn.core.draw_text.call(null, state, x_mid, 3 + y, message);
-          var G__9739 = cljs.core.next.call(null, seq__9725__$1);
-          var G__9740 = null;
-          var G__9741 = 0;
-          var G__9742 = 0;
-          seq__9725 = G__9739;
-          chunk__9726 = G__9740;
-          count__9727 = G__9741;
-          i__9728 = G__9742;
+          var G__4895 = cljs.core.next.call(null, seq__4881__$1);
+          var G__4896 = null;
+          var G__4897 = 0;
+          var G__4898 = 0;
+          seq__4881 = G__4895;
+          chunk__4882 = G__4896;
+          count__4883 = G__4897;
+          i__4884 = G__4898;
           continue
         }
       }else {
@@ -28682,68 +28682,68 @@ cljs.core._add_method.call(null, dragonspawn.core.render, "\ufdd0:start", functi
   }
 });
 cljs.core._add_method.call(null, dragonspawn.core.render, "\ufdd0:playing", function(state) {
-  var map__9743 = state;
-  var map__9743__$1 = cljs.core.seq_QMARK_.call(null, map__9743) ? cljs.core.apply.call(null, cljs.core.hash_map, map__9743) : map__9743;
-  var inventory = cljs.core.get.call(null, map__9743__$1, "\ufdd0:inventory");
-  var item_locations = cljs.core.get.call(null, map__9743__$1, "\ufdd0:item-locations");
-  var start_time = cljs.core.get.call(null, map__9743__$1, "\ufdd0:start-time");
-  var player = cljs.core.get.call(null, map__9743__$1, "\ufdd0:player");
+  var map__4899 = state;
+  var map__4899__$1 = cljs.core.seq_QMARK_.call(null, map__4899) ? cljs.core.apply.call(null, cljs.core.hash_map, map__4899) : map__4899;
+  var inventory = cljs.core.get.call(null, map__4899__$1, "\ufdd0:inventory");
+  var item_locations = cljs.core.get.call(null, map__4899__$1, "\ufdd0:item-locations");
+  var start_time = cljs.core.get.call(null, map__4899__$1, "\ufdd0:start-time");
+  var player = cljs.core.get.call(null, map__4899__$1, "\ufdd0:player");
   var countdown = dragonspawn.core.time_limit - dragonspawn.core.elapsed_time.call(null, start_time);
-  var vec__9744 = player;
-  var player_x = cljs.core.nth.call(null, vec__9744, 0, null);
-  var player_y = cljs.core.nth.call(null, vec__9744, 1, null);
+  var vec__4900 = player;
+  var player_x = cljs.core.nth.call(null, vec__4900, 0, null);
+  var player_y = cljs.core.nth.call(null, vec__4900, 1, null);
   dragonspawn.core.draw_grass.call(null, state);
-  var seq__9745_9753 = cljs.core.seq.call(null, item_locations);
-  var chunk__9746_9754 = null;
-  var count__9747_9755 = 0;
-  var i__9748_9756 = 0;
+  var seq__4901_4909 = cljs.core.seq.call(null, item_locations);
+  var chunk__4902_4910 = null;
+  var count__4903_4911 = 0;
+  var i__4904_4912 = 0;
   while(true) {
-    if(i__9748_9756 < count__9747_9755) {
-      var vec__9749_9757 = cljs.core._nth.call(null, chunk__9746_9754, i__9748_9756);
-      var vec__9750_9758 = cljs.core.nth.call(null, vec__9749_9757, 0, null);
-      var x_9759 = cljs.core.nth.call(null, vec__9750_9758, 0, null);
-      var y_9760 = cljs.core.nth.call(null, vec__9750_9758, 1, null);
-      var sprite_9761 = cljs.core.nth.call(null, vec__9749_9757, 1, null);
-      dragonspawn.core.draw_sprite.call(null, state, x_9759, y_9760, dragonspawn.core.cell_size, sprite_9761);
-      var G__9762 = seq__9745_9753;
-      var G__9763 = chunk__9746_9754;
-      var G__9764 = count__9747_9755;
-      var G__9765 = i__9748_9756 + 1;
-      seq__9745_9753 = G__9762;
-      chunk__9746_9754 = G__9763;
-      count__9747_9755 = G__9764;
-      i__9748_9756 = G__9765;
+    if(i__4904_4912 < count__4903_4911) {
+      var vec__4905_4913 = cljs.core._nth.call(null, chunk__4902_4910, i__4904_4912);
+      var vec__4906_4914 = cljs.core.nth.call(null, vec__4905_4913, 0, null);
+      var x_4915 = cljs.core.nth.call(null, vec__4906_4914, 0, null);
+      var y_4916 = cljs.core.nth.call(null, vec__4906_4914, 1, null);
+      var sprite_4917 = cljs.core.nth.call(null, vec__4905_4913, 1, null);
+      dragonspawn.core.draw_sprite.call(null, state, x_4915, y_4916, dragonspawn.core.cell_size, sprite_4917);
+      var G__4918 = seq__4901_4909;
+      var G__4919 = chunk__4902_4910;
+      var G__4920 = count__4903_4911;
+      var G__4921 = i__4904_4912 + 1;
+      seq__4901_4909 = G__4918;
+      chunk__4902_4910 = G__4919;
+      count__4903_4911 = G__4920;
+      i__4904_4912 = G__4921;
       continue
     }else {
-      var temp__4092__auto___9766 = cljs.core.seq.call(null, seq__9745_9753);
-      if(temp__4092__auto___9766) {
-        var seq__9745_9767__$1 = temp__4092__auto___9766;
-        if(cljs.core.chunked_seq_QMARK_.call(null, seq__9745_9767__$1)) {
-          var c__3039__auto___9768 = cljs.core.chunk_first.call(null, seq__9745_9767__$1);
-          var G__9769 = cljs.core.chunk_rest.call(null, seq__9745_9767__$1);
-          var G__9770 = c__3039__auto___9768;
-          var G__9771 = cljs.core.count.call(null, c__3039__auto___9768);
-          var G__9772 = 0;
-          seq__9745_9753 = G__9769;
-          chunk__9746_9754 = G__9770;
-          count__9747_9755 = G__9771;
-          i__9748_9756 = G__9772;
+      var temp__4092__auto___4922 = cljs.core.seq.call(null, seq__4901_4909);
+      if(temp__4092__auto___4922) {
+        var seq__4901_4923__$1 = temp__4092__auto___4922;
+        if(cljs.core.chunked_seq_QMARK_.call(null, seq__4901_4923__$1)) {
+          var c__3039__auto___4924 = cljs.core.chunk_first.call(null, seq__4901_4923__$1);
+          var G__4925 = cljs.core.chunk_rest.call(null, seq__4901_4923__$1);
+          var G__4926 = c__3039__auto___4924;
+          var G__4927 = cljs.core.count.call(null, c__3039__auto___4924);
+          var G__4928 = 0;
+          seq__4901_4909 = G__4925;
+          chunk__4902_4910 = G__4926;
+          count__4903_4911 = G__4927;
+          i__4904_4912 = G__4928;
           continue
         }else {
-          var vec__9751_9773 = cljs.core.first.call(null, seq__9745_9767__$1);
-          var vec__9752_9774 = cljs.core.nth.call(null, vec__9751_9773, 0, null);
-          var x_9775 = cljs.core.nth.call(null, vec__9752_9774, 0, null);
-          var y_9776 = cljs.core.nth.call(null, vec__9752_9774, 1, null);
-          var sprite_9777 = cljs.core.nth.call(null, vec__9751_9773, 1, null);
-          dragonspawn.core.draw_sprite.call(null, state, x_9775, y_9776, dragonspawn.core.cell_size, sprite_9777);
-          var G__9778 = cljs.core.next.call(null, seq__9745_9767__$1);
-          var G__9779 = null;
-          var G__9780 = 0;
-          var G__9781 = 0;
-          seq__9745_9753 = G__9778;
-          chunk__9746_9754 = G__9779;
-          count__9747_9755 = G__9780;
-          i__9748_9756 = G__9781;
+          var vec__4907_4929 = cljs.core.first.call(null, seq__4901_4923__$1);
+          var vec__4908_4930 = cljs.core.nth.call(null, vec__4907_4929, 0, null);
+          var x_4931 = cljs.core.nth.call(null, vec__4908_4930, 0, null);
+          var y_4932 = cljs.core.nth.call(null, vec__4908_4930, 1, null);
+          var sprite_4933 = cljs.core.nth.call(null, vec__4907_4929, 1, null);
+          dragonspawn.core.draw_sprite.call(null, state, x_4931, y_4932, dragonspawn.core.cell_size, sprite_4933);
+          var G__4934 = cljs.core.next.call(null, seq__4901_4923__$1);
+          var G__4935 = null;
+          var G__4936 = 0;
+          var G__4937 = 0;
+          seq__4901_4909 = G__4934;
+          chunk__4902_4910 = G__4935;
+          count__4903_4911 = G__4936;
+          i__4904_4912 = G__4937;
           continue
         }
       }else {
@@ -28771,10 +28771,10 @@ dragonspawn.core.render_world = function render_world(state) {
     return render_world.call(null, state)
   })
 };
-dragonspawn.core.boundary = function boundary(p__9782) {
-  var vec__9784 = p__9782;
-  var x = cljs.core.nth.call(null, vec__9784, 0, null);
-  var y = cljs.core.nth.call(null, vec__9784, 1, null);
+dragonspawn.core.boundary = function boundary(p__4938) {
+  var vec__4940 = p__4938;
+  var x = cljs.core.nth.call(null, vec__4940, 0, null);
+  var y = cljs.core.nth.call(null, vec__4940, 1, null);
   return cljs.core.PersistentVector.fromArray([function() {
     var x__2642__auto__ = function() {
       var x__2635__auto__ = x;
@@ -28795,27 +28795,27 @@ dragonspawn.core.boundary = function boundary(p__9782) {
 };
 dragonspawn.core.move_player = function move_player(state, direction) {
   return cljs.core.swap_BANG_.call(null, state, function(current) {
-    var map__9793 = current;
-    var map__9793__$1 = cljs.core.seq_QMARK_.call(null, map__9793) ? cljs.core.apply.call(null, cljs.core.hash_map, map__9793) : map__9793;
-    var item_locations = cljs.core.get.call(null, map__9793__$1, "\ufdd0:item-locations");
-    var inventory = cljs.core.get.call(null, map__9793__$1, "\ufdd0:inventory");
-    var player = cljs.core.get.call(null, map__9793__$1, "\ufdd0:player");
-    var vec__9794 = player;
-    var player_x = cljs.core.nth.call(null, vec__9794, 0, null);
-    var player_y = cljs.core.nth.call(null, vec__9794, 1, null);
+    var map__4949 = current;
+    var map__4949__$1 = cljs.core.seq_QMARK_.call(null, map__4949) ? cljs.core.apply.call(null, cljs.core.hash_map, map__4949) : map__4949;
+    var item_locations = cljs.core.get.call(null, map__4949__$1, "\ufdd0:item-locations");
+    var inventory = cljs.core.get.call(null, map__4949__$1, "\ufdd0:inventory");
+    var player = cljs.core.get.call(null, map__4949__$1, "\ufdd0:player");
+    var vec__4950 = player;
+    var player_x = cljs.core.nth.call(null, vec__4950, 0, null);
+    var player_y = cljs.core.nth.call(null, vec__4950, 1, null);
     var new_player = dragonspawn.core.boundary.call(null, function() {
-      var pred__9795 = cljs.core._EQ_;
-      var expr__9796 = direction;
-      if(pred__9795.call(null, "\ufdd0:left", expr__9796)) {
+      var pred__4951 = cljs.core._EQ_;
+      var expr__4952 = direction;
+      if(pred__4951.call(null, "\ufdd0:left", expr__4952)) {
         return cljs.core.PersistentVector.fromArray([player_x - 1, player_y], true)
       }else {
-        if(pred__9795.call(null, "\ufdd0:right", expr__9796)) {
+        if(pred__4951.call(null, "\ufdd0:right", expr__4952)) {
           return cljs.core.PersistentVector.fromArray([player_x + 1, player_y], true)
         }else {
-          if(pred__9795.call(null, "\ufdd0:forward", expr__9796)) {
+          if(pred__4951.call(null, "\ufdd0:forward", expr__4952)) {
             return cljs.core.PersistentVector.fromArray([player_x, player_y - 1], true)
           }else {
-            if(pred__9795.call(null, "\ufdd0:back", expr__9796)) {
+            if(pred__4951.call(null, "\ufdd0:back", expr__4952)) {
               return cljs.core.PersistentVector.fromArray([player_x, player_y + 1], true)
             }else {
               return player
@@ -28826,12 +28826,12 @@ dragonspawn.core.move_player = function move_player(state, direction) {
     }());
     var item_at_player = cljs.core.get.call(null, item_locations, new_player);
     var sounds = function() {
-      var pred__9798 = cljs.core._EQ_;
-      var expr__9799 = item_at_player;
-      if(pred__9798.call(null, "\ufdd0:potion", expr__9799)) {
+      var pred__4954 = cljs.core._EQ_;
+      var expr__4955 = item_at_player;
+      if(pred__4954.call(null, "\ufdd0:potion", expr__4955)) {
         return dragonspawn.core.potion.play()
       }else {
-        if(pred__9798.call(null, "\ufdd0:bones", expr__9799)) {
+        if(pred__4954.call(null, "\ufdd0:bones", expr__4955)) {
           return dragonspawn.core.pickup.play()
         }else {
           return null
@@ -28846,20 +28846,20 @@ dragonspawn.core.move_player = function move_player(state, direction) {
 dragonspawn.core.timeup_QMARK_ = function timeup_QMARK_(start_time) {
   return dragonspawn.core.elapsed_time.call(null, start_time) >= dragonspawn.core.time_limit
 };
-dragonspawn.core.playing_QMARK_ = function playing_QMARK_(p__9801) {
-  var map__9803 = p__9801;
-  var map__9803__$1 = cljs.core.seq_QMARK_.call(null, map__9803) ? cljs.core.apply.call(null, cljs.core.hash_map, map__9803) : map__9803;
-  var game_state = cljs.core.get.call(null, map__9803__$1, "\ufdd0:game-state");
+dragonspawn.core.playing_QMARK_ = function playing_QMARK_(p__4957) {
+  var map__4959 = p__4957;
+  var map__4959__$1 = cljs.core.seq_QMARK_.call(null, map__4959) ? cljs.core.apply.call(null, cljs.core.hash_map, map__4959) : map__4959;
+  var game_state = cljs.core.get.call(null, map__4959__$1, "\ufdd0:game-state");
   return cljs.core._EQ_.call(null, game_state, "\ufdd0:playing")
 };
 dragonspawn.core.check_game = function check_game(state) {
   if(cljs.core.truth_(dragonspawn.core.playing_QMARK_.call(null, cljs.core.deref.call(null, state)))) {
     return cljs.core.swap_BANG_.call(null, state, function(current) {
-      var map__9805 = current;
-      var map__9805__$1 = cljs.core.seq_QMARK_.call(null, map__9805) ? cljs.core.apply.call(null, cljs.core.hash_map, map__9805) : map__9805;
-      var inventory = cljs.core.get.call(null, map__9805__$1, "\ufdd0:inventory");
-      var start_time = cljs.core.get.call(null, map__9805__$1, "\ufdd0:start-time");
-      var game_state = cljs.core.get.call(null, map__9805__$1, "\ufdd0:game-state");
+      var map__4961 = current;
+      var map__4961__$1 = cljs.core.seq_QMARK_.call(null, map__4961) ? cljs.core.apply.call(null, cljs.core.hash_map, map__4961) : map__4961;
+      var inventory = cljs.core.get.call(null, map__4961__$1, "\ufdd0:inventory");
+      var start_time = cljs.core.get.call(null, map__4961__$1, "\ufdd0:start-time");
+      var game_state = cljs.core.get.call(null, map__4961__$1, "\ufdd0:game-state");
       return cljs.core.assoc.call(null, current, "\ufdd0:game-state", cljs.core.truth_(dragonspawn.core.enough_bones_QMARK_.call(null, inventory)) ? "\ufdd0:win" : cljs.core.truth_(dragonspawn.core.timeup_QMARK_.call(null, start_time)) ? "\ufdd0:lose" : "\ufdd0:else" ? game_state : null)
     })
   }else {
@@ -28879,15 +28879,15 @@ dragonspawn.core.reset_game = function reset_game(state, keyevent) {
   }
 };
 dragonspawn.core.handle_keyevent = function handle_keyevent(state, keyevent) {
-  var map__9810_9814 = cljs.core.deref.call(null, state);
-  var map__9810_9815__$1 = cljs.core.seq_QMARK_.call(null, map__9810_9814) ? cljs.core.apply.call(null, cljs.core.hash_map, map__9810_9814) : map__9810_9814;
-  var game_state_9816 = cljs.core.get.call(null, map__9810_9815__$1, "\ufdd0:game-state");
-  var pred__9811_9817 = cljs.core._EQ_;
-  var expr__9812_9818 = game_state_9816;
-  if(pred__9811_9817.call(null, "\ufdd0:playing", expr__9812_9818)) {
+  var map__4966_4970 = cljs.core.deref.call(null, state);
+  var map__4966_4971__$1 = cljs.core.seq_QMARK_.call(null, map__4966_4970) ? cljs.core.apply.call(null, cljs.core.hash_map, map__4966_4970) : map__4966_4970;
+  var game_state_4972 = cljs.core.get.call(null, map__4966_4971__$1, "\ufdd0:game-state");
+  var pred__4967_4973 = cljs.core._EQ_;
+  var expr__4968_4974 = game_state_4972;
+  if(pred__4967_4973.call(null, "\ufdd0:playing", expr__4968_4974)) {
     dragonspawn.core.move_player.call(null, state, keyevent)
   }else {
-    if(pred__9811_9817.call(null, "\ufdd0:start", expr__9812_9818)) {
+    if(pred__4967_4973.call(null, "\ufdd0:start", expr__4968_4974)) {
       dragonspawn.core.start_game.call(null, state)
     }else {
       dragonspawn.core.reset_game.call(null, state, keyevent)
@@ -28906,19 +28906,20 @@ dragonspawn.core.keydown = function keydown(state, e) {
   return dragonspawn.core.handle_keyevent.call(null, state, dragonspawn.core.translate_keyboard_event.call(null, e))
 };
 dragonspawn.core.px = function px(size) {
-  return[cljs.core.str(size | 0), cljs.core.str(".px")].join("")
+  return[cljs.core.str(size | 0), cljs.core.str("px")].join("")
 };
 dragonspawn.core.resize = function() {
   var resize__delegate = function(args) {
     var winWidth = window.innerWidth;
     var winHeight = window.innerHeight;
     var currentRatio = winWidth / winHeight;
-    var vec__9820 = currentRatio > dragonspawn.core.aspectRatio ? cljs.core.PersistentVector.fromArray([winHeight * dragonspawn.core.aspectRatio, winHeight], true) : cljs.core.PersistentVector.fromArray([winWidth, winWidth / dragonspawn.core.aspectRatio], true);
-    var width = cljs.core.nth.call(null, vec__9820, 0, null);
-    var height = cljs.core.nth.call(null, vec__9820, 1, null);
+    var vec__4976 = currentRatio > dragonspawn.core.aspectRatio ? cljs.core.PersistentVector.fromArray([winHeight * dragonspawn.core.aspectRatio, winHeight], true) : cljs.core.PersistentVector.fromArray([winWidth, winWidth / dragonspawn.core.aspectRatio], true);
+    var width = cljs.core.nth.call(null, vec__4976, 0, null);
+    var height = cljs.core.nth.call(null, vec__4976, 1, null);
     var top = -height / 2;
     var left = -width / 2;
-    return domina.set_styles_BANG_.call(null, dragonspawn.core.surface, cljs.core.PersistentArrayMap.fromArray(["\ufdd0:width", dragonspawn.core.px.call(null, width), "\ufdd0:height", dragonspawn.core.px.call(null, height), "\ufdd0:marginTop", dragonspawn.core.px.call(null, top), "\ufdd0:marginLeft", dragonspawn.core.px.call(null, left)], true))
+    var css = cljs.core.PersistentArrayMap.fromArray(["\ufdd0:width", dragonspawn.core.px.call(null, width), "\ufdd0:height", dragonspawn.core.px.call(null, height), "\ufdd0:marginTop", dragonspawn.core.px.call(null, top), "\ufdd0:marginLeft", dragonspawn.core.px.call(null, left)], true);
+    return domina.set_styles_BANG_.call(null, dragonspawn.core.surface, css)
   };
   var resize = function(var_args) {
     var args = null;
@@ -28928,8 +28929,8 @@ dragonspawn.core.resize = function() {
     return resize__delegate.call(this, args)
   };
   resize.cljs$lang$maxFixedArity = 0;
-  resize.cljs$lang$applyTo = function(arglist__9821) {
-    var args = cljs.core.seq(arglist__9821);
+  resize.cljs$lang$applyTo = function(arglist__4977) {
+    var args = cljs.core.seq(arglist__4977);
     return resize__delegate(args)
   };
   resize.cljs$core$IFn$_invoke$arity$variadic = resize__delegate;

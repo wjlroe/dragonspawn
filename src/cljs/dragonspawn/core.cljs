@@ -266,7 +266,7 @@
 
 (defn px
   [size]
-  (str (int size) ".px"))
+  (str (int size) "px"))
 
 (defn resize
   [& args]
@@ -277,12 +277,13 @@
                          [(* winHeight aspectRatio) winHeight]
                          [winWidth (/ winWidth aspectRatio)])
         top (/ (- height) 2)
-        left (/ (- width) 2)]
+        left (/ (- width) 2)
+        css {:width (px width)
+             :height (px height)
+             :marginTop (px top)
+             :marginLeft (px left)}]
     (set-styles! surface
-                 {:width (px width)
-                  :height (px height)
-                  :marginTop (px top)
-                  :marginLeft (px left)})))
+                 css)))
 
 (defn setup-events
   [state]
