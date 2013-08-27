@@ -80,13 +80,17 @@
 
 (def keycode->key
   {kcs/SPACE :space
-   kcs/W :forward
-   kcs/A :left
-   kcs/S :back
-   kcs/D :right
-   kcs/N :new-game
+   kcs/W     :forward
+   kcs/UP    :forward
+   kcs/A     :left
+   kcs/LEFT  :left
+   kcs/S     :back
+   kcs/DOWN  :back
+   kcs/D     :right
+   kcs/RIGHT :right
+   kcs/N     :new-game
    kcs/SLASH :toggle-music
-   kcs/P :toggle-music})
+   kcs/P     :toggle-music})
 
 (def sprites
   {:bones (dom/getElement "bones")
@@ -269,9 +273,14 @@
       .-keyCode
       keycode->key))
 
+(defn prevent-default?
+  [keyevent]
+  (.log js/console "prevent-default?" keyevent)
+  (contains? #{:space :forward :back :left :right} keyevent))
+
 (defn keydown
   [state e]
-  (when (= :space (translate-keyboard-event e))
+  (when (prevent-default? (translate-keyboard-event e))
     (.preventDefault e))
   (->> e
        translate-keyboard-event
