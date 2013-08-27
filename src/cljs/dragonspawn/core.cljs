@@ -21,7 +21,9 @@
                     "Some villagers are coming to find and kill you."
                     (str "You have " time-limit " seconds to find " number-bones-needed)
                     "dragon bones to build a dragon to defend yourself."
-                    "[Press any key to begin]"])
+                    "[Press any key to begin]"
+                    ""
+                    "Press '/' or 'p' to pause or play the music"])
 
 (defn abs
   [number]
@@ -41,6 +43,7 @@
 
 (def pickup (dom/getElement "pickup"))
 (def potion (dom/getElement "potion"))
+(def soundtrack (dom/getElement "soundtrack"))
 
 (def surface
   (let [surface (dom/getElement "surface")]
@@ -81,7 +84,9 @@
    kcs/A :left
    kcs/S :back
    kcs/D :right
-   kcs/N :new-game})
+   kcs/N :new-game
+   kcs/SLASH :toggle-music
+   kcs/P :toggle-music})
 
 (def sprites
   {:bones (dom/getElement "bones")
@@ -96,6 +101,12 @@
   [{:keys [player]}]
   (let [[player-x player-y] player]
     (.log js/console "player x" player-x "player y" player-y)))
+
+(defn toggle-music
+  []
+  (if (.-paused soundtrack)
+    (.play soundtrack)
+    (.pause soundtrack)))
 
 (defn draw-sprite
   [state x y size sprite]
@@ -242,11 +253,13 @@
 
 (defn handle-keyevent
   [state keyevent]
-  (let [{:keys [game-state]} @state]
-    (condp = game-state
-      :playing (move-player state keyevent)
-      :start (start-game state)
-      (reset-game state keyevent)))
+  (condp = keyevent
+    :toggle-music (toggle-music)
+    (let [{:keys [game-state]} @state]
+      (condp = game-state
+        :playing (move-player state keyevent)
+        :start (start-game state)
+        (reset-game state keyevent))))
   (log-state @state))
 
 (defn translate-keyboard-event
